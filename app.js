@@ -1,14 +1,3 @@
-function randByte() {
-  
-}
-
-function randRGB() {
-}
-
-function getContext() {
-  
-}
-
 var App = {};
 
 App.programs = {};
