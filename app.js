@@ -1,3 +1,5 @@
+Math.TAU = Math.PI*2;
+
 var App = {};
 
 App.programs = {};
@@ -10,6 +12,28 @@ App.randByte = function() {
 
 App.randRGB = function() {
   return 'rgb(' + [App.randByte(), App.randByte(), App.randByte()].join(',') + ')';
+};
+
+App.poly = function(x, y, r, n) {
+  var ctx = App.getContext();
+
+  ctx.beginPath();
+
+  var d = Math.TAU/n;
+
+  for (var i=0; i<n; i++) {
+    var _x = x + Math.cos(i*d) * r;
+    var _y = y + Math.sin(i*d) * r;
+
+    if (i===0) {
+      ctx.moveTo(_x, _y);
+    } else {
+      ctx.lineTo(_x, _y);
+    }
+  }
+
+  ctx.closePath();
+
 };
 
 App.getContext = function() {
@@ -117,6 +141,22 @@ App.programs.rotatingRectangles = function() {
     }
 };
 
+App.programs.polygons = function() {
+  var ctx = App.getContext();
+  var r = 1, dr = 3;
+
+  for (var i=3; i<360; i++) {
+    ctx.save();
+    App.poly(200, 200, r, i);
+    ctx.strokeStyle = App.randRGB();
+    ctx.stroke();
+    ctx.restore();
+
+    r += dr;
+
+  }
+};
+
 $(function() {
   // store a reference to the program selection widget
   App.$select = $('#select');
@@ -139,5 +179,5 @@ $(function() {
   });
 
   // make the app render once at startup
-  App.trigger('change');
+  App.$select.trigger('change');
 });
