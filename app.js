@@ -1,1 +1,10 @@
-alert('你好鍾姍芸');
+function draw() {
+  
+}
+
+window.onload = function() {
+  var canvas = document.getElementById('canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  draw(); 
+}
