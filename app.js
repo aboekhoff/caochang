@@ -6,67 +6,75 @@ function randRGB() {
   return 'rgb(' + [randByte(), randByte(), randByte()].join(',') + ')';
 }
 
-function resetCanvas() {
-  var canvas = document.getElementById('canvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - $('#select').height();
-}
-
-function drawCurrentSelection() {
-  drawingFunctions[$('#select').val()]();
-}
-
 function getContext() {
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
   return ctx;
 }
 
-var drawingFunctions = {
+var App = {
+  programs: {}
+};
 
-  simpleRectangle: function() {
+
+App.drawCurrentSelection = function() {
+  var programName = App.$select.val();
+  var program = App.programs[programName];
+  program();
+};
+
+App.resetCanvas = function() {
+  var canvas = document.getElementById('canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight - $('#select').height();
+};
+
+App.render = function() {
+  App.resetCanvas();
+  App.drawCurrentSelection();
+};
+
+App.programs.simpleRectangle = function() {
   var ctx = getContext();
-
-  //       x   y   w    h
   ctx.rect(20, 20, 100, 50);
   ctx.stroke();
-  },
+};
 
-  rainbowRectangles: function() {
-    var ctx = getContext();
+App.programs.rainbowRectangles = function() {
+  var ctx = getContext();
 
-    var dx = 2;
-    var dy = 2;
-    var dw = 2;
-    var dh = 2;
+  var dx = 2;
+  var dy = 2;
+  var dw = 2;
+  var dh = 2;
 
-    var x = 20;
-    var y = 20;
-    var w = 200;
-    var h = 100;
+  var x = 20;
+  var y = 20;
+  var w = 200;
+  var h = 100;
 
-    for (var i=0; i<30; i++) {
+  for (var i=0; i<30; i++) {
     
-      // draw the shape
-      ctx.beginPath();
-      ctx.rect(x, y, w, h);
-      ctx.closePath();
+    // draw the shape
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.closePath();
 
-      // set the fill color and paint it
-      var color = randRGB();
-      ctx.strokeStyle = color;
-      ctx.stroke();  
+    // set the fill color and paint it
+    var color = randRGB();
+    ctx.strokeStyle = color;
+    ctx.stroke();  
     
-      // update the variables
-      x += dx;
-      y += dy;
-      w += dw;
-      h += dh;
-    }
+    // update the variables
+    x += dx;
+    y += dy;
+    w += dw;
+    h += dh;
+  }
 
-  },
+};
 
-  rotatingRectangles: function() {
+App.programs.rotatingRectangles = function() {
     var ctx = getContext();
 
     var dx = 6;
@@ -106,18 +114,14 @@ var drawingFunctions = {
       r += dr;
 
     }
-
-  }
-
 };
 
 $(function() {
-  var $select = $('#select');
-  for (var func in drawingFunctions) {
-    $select.append($('<option value="' + func + '">' + func + '</option>'));
+  App.$select = $('#select');
+  for (var func in App.programs) {
+    App.$select.append($('<option value="' + func + '">' + func + '</option>'));
   }
-  $select.on('change', function(e) {
-    resetCanvas();
-    drawCurrentSelection();
+ App.$select.on('change', function(e) {
+    App.render();
   }).trigger('change');
 });
