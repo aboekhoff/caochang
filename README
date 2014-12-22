@@ -1,0 +1,3 @@
+cd to the program directory
+$ python -m SimpleHTTPServer
+open localhost:8000
