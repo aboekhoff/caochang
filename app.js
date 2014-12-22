@@ -78,7 +78,7 @@ App.programs.rainbowRectangles = function() {
   var w = 200;
   var h = 100;
 
-  for (var i=0; i<30; i++) {
+  for (var i=0; i<300; i++) {
     
     // draw the shape
     ctx.beginPath();
@@ -143,16 +143,16 @@ App.programs.rotatingRectangles = function() {
 
 App.programs.polygons = function() {
   var ctx = App.getContext();
-  var r = 1, dr = 3;
+  var n = 360, dr = 12, r = n*dr;
 
-  for (var i=3; i<360; i++) {
+  for (var i=n; i>=0; i--) {
     ctx.save();
     App.poly(200, 200, r, i);
-    ctx.strokeStyle = App.randRGB();
-    ctx.stroke();
+    ctx.fillStyle = App.randRGB();
+    ctx.fill();
     ctx.restore();
 
-    r += dr;
+    r -= dr;
 
   }
 };
