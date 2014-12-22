@@ -118,9 +118,15 @@ App.programs.rotatingRectangles = function() {
 
 $(function() {
   App.$select = $('#select');
-  for (var func in App.programs) {
-    App.$select.append($('<option value="' + func + '">' + func + '</option>'));
+
+  var programNames = [];
+  for (var name in App.programs) {
+    programNames.push(name);
   }
+  programNames.sort();
+  programNames.forEach(function(name) {
+    App.$select.append($('<option value="' + name + '">' + name + '</option>'));
+  });
  App.$select.on('change', function(e) {
     App.render();
   }).trigger('change');
