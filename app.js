@@ -1,32 +1,44 @@
 function randByte() {
-  return Math.floor(Math.random() * 256);
+  
 }
 
 function randRGB() {
-  return 'rgb(' + [randByte(), randByte(), randByte()].join(',') + ')';
 }
 
 function getContext() {
+  
+}
+
+var App = {};
+
+App.programs = {};
+
+App.$select = null;
+
+App.randByte = function() {
+  return Math.floor(Math.random() * 256);  
+};
+
+App.randRGB = function() {
+  return 'rgb(' + [App.randByte(), App.randByte(), App.randByte()].join(',') + ')';
+};
+
+App.getContext = function() {
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
   return ctx;
-}
-
-var App = {
-  programs: {}
 };
 
-
 App.drawCurrentSelection = function() {
-  var programName = App.$select.val();
-  var program = App.programs[programName];
+  var name = App.$select.val();
+  var program = App.programs[name];
   program();
 };
 
 App.resetCanvas = function() {
   var canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - $('#select').height();
+  canvas.height = window.innerHeight - App.$select.height();
 };
 
 App.render = function() {
@@ -35,13 +47,13 @@ App.render = function() {
 };
 
 App.programs.simpleRectangle = function() {
-  var ctx = getContext();
+  var ctx = App.getContext();
   ctx.rect(20, 20, 100, 50);
   ctx.stroke();
 };
 
 App.programs.rainbowRectangles = function() {
-  var ctx = getContext();
+  var ctx = App.getContext();
 
   var dx = 2;
   var dy = 2;
@@ -61,7 +73,7 @@ App.programs.rainbowRectangles = function() {
     ctx.closePath();
 
     // set the fill color and paint it
-    var color = randRGB();
+    var color = App.randRGB();
     ctx.strokeStyle = color;
     ctx.stroke();  
     
@@ -75,7 +87,7 @@ App.programs.rainbowRectangles = function() {
 };
 
 App.programs.rotatingRectangles = function() {
-    var ctx = getContext();
+    var ctx = App.getContext();
 
     var dx = 6;
     var dy = 6;
@@ -103,7 +115,7 @@ App.programs.rotatingRectangles = function() {
       ctx.closePath();
 
       ctx.stroke();
-      ctx.fillStyle = randRGB();
+      ctx.fillStyle = App.randRGB();
       ctx.fill();
       ctx.restore();
 
