@@ -118,17 +118,26 @@ App.programs.rotatingRectangles = function() {
 };
 
 $(function() {
+  // store a reference to the program selection widget
   App.$select = $('#select');
 
+  // sort the programs in App.programs alphabetically
   var programNames = [];
   for (var name in App.programs) {
     programNames.push(name);
   }
   programNames.sort();
+
+  // append an option tag for each program name to the select widget
   programNames.forEach(function(name) {
     App.$select.append($('<option value="' + name + '">' + name + '</option>'));
   });
- App.$select.on('change', function(e) {
+
+  // make the app rerender whenever the selection changes;
+  App.$select.on('change', function(e) {
     App.render();
-  }).trigger('change');
+  });
+
+  // make the app render once at startup
+  App.trigger('change');
 });
