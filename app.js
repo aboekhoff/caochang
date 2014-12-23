@@ -14,10 +14,8 @@ App.randRGB = function() {
   return 'rgb(' + [App.randByte(), App.randByte(), App.randByte()].join(',') + ')';
 };
 
-App.poly = function(x, y, r, n) {
-  var ctx = App.getContext();
-
-  ctx.beginPath();
+CanvasRenderingContext2D.prototype.poly = function(x, y, r, n) {
+  this.beginPath();
 
   var d = Math.TAU/n;
 
@@ -26,19 +24,20 @@ App.poly = function(x, y, r, n) {
     var _y = y + Math.sin(i*d) * r;
 
     if (i===0) {
-      ctx.moveTo(_x, _y);
+      this.moveTo(_x, _y);
     } else {
-      ctx.lineTo(_x, _y);
+      this.lineTo(_x, _y);
     }
   }
 
-  ctx.closePath();
+  this.closePath();
 
 };
 
 App.getContext = function() {
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
+
   return ctx;
 };
 
@@ -147,7 +146,7 @@ App.programs.polygons = function() {
 
   for (var i=n; i>=0; i--) {
     ctx.save();
-    App.poly(200, 200, r, i);
+    ctx.poly(200, 200, r, i);
     ctx.fillStyle = App.randRGB();
     ctx.fill();
     ctx.restore();
