@@ -1,3 +1,0 @@
-App.programs.animation = function() {
-
-};
