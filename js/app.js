@@ -26,6 +26,25 @@ App.programs = {};
 
 App.$select = null;
 
+App.stopAnimation = function() {
+  if (App.currentAnimation) {
+    App.currentAnimation.isRunning = false;
+    App.currentAnimation = null;
+  }
+}
+
+App.startAnimation = function(animation) {
+  var loop = function() {
+    if (loop.isRunning) {
+      window.requestAnimationFrame(loop);
+      animation();
+    }
+  }
+  App.currentAnimation = loop;
+  loop.isRunning = true;
+  loop();
+};
+
 App.randByte = function() {
   return Math.floor(Math.random() * 256);  
 };
@@ -41,7 +60,7 @@ App.getContext = function() {
   return ctx;
 };
 
-App.drawCurrentSelection = function() {
+App.runCurrentSelection = function() {
   var name = App.$select.val();
   var program = App.programs[name];
   program();
@@ -53,9 +72,10 @@ App.resetCanvas = function() {
   canvas.height = window.innerHeight - App.$select.height();
 };
 
-App.render = function() {
+App.run = function() {
+  App.stopAnimation();
   App.resetCanvas();
-  App.drawCurrentSelection();
+  App.runCurrentSelection();
 };
 
 App.initSelect = function() {
@@ -76,10 +96,10 @@ App.initSelect = function() {
 
   // make the app rerender whenever the selection changes;
   App.$select.on('change', function(e) {
-    App.render();
+    App.run();
   });
 
-  App.render();
+  App.run();
 };
 
 $(function() {
